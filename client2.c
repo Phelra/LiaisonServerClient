@@ -46,6 +46,7 @@ int main(){
 
     // Boucle pour recevoir des messages en continu du serveur
     while(1){
+        printf("En attente de reception de mesage");
         int bytesRead = recv(clientSocket, buffer, 1024, 0);
         if (bytesRead <= 0){
             break; // Sortir de la boucle si la connexion est perdue

@@ -25,7 +25,7 @@ int main(){
 
     // Écouter sur le socket
     if(listen(serverSocket,5)==0)
-        printf("Listening\n");
+        printf("Serveur en ecoute...\n");
     else
         printf("Error\n");
 
