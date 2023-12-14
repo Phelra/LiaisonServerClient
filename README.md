@@ -1,1 +1,1 @@
-# LiaisonServerClient
+# Communication simple serveur / client
