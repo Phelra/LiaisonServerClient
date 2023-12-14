@@ -17,7 +17,7 @@ int main(){
     // Configurer les paramètres de l'adresse du serveur
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(7891);
-    serverAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    serverAddr.sin_addr.s_addr = inet_addr("172.20.10.5");
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);  
 
     // Lier le socket avec l'adresse
