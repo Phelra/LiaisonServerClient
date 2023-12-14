@@ -21,61 +21,28 @@ int main(){
 
     printf("Création du socket...\n");
     serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
-    if (serverSocket == INVALID_SOCKET) {
-        printf("Échec de la création du socket : %ld\n", WSAGetLastError());
-        WSACleanup();
-        return 1;
-    }
 
     printf("Configuration des paramètres du serveur...\n");
     serverAddr.sin_family = AF_INET;
     serverAddr.sin_port = htons(7891);
-    serverAddr.sin_addr.s_addr = inet_addr("172.20.10.3");
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
     memset(serverAddr.sin_zero, '\0', sizeof serverAddr.sin_zero);
 
     printf("Liaison du socket...\n");
-    if (bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr)) == SOCKET_ERROR) {
-        printf("Échec de la liaison : %ld\n", WSAGetLastError());
-        closesocket(serverSocket);
-        WSACleanup();
-        return 1;
-    }
+    bind(serverSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr));
 
     printf("Démarrage de l'écoute...\n");
-    if (listen(serverSocket, 5) == SOCKET_ERROR) {
-        printf("Écoute échouée : %ld\n", WSAGetLastError());
-        closesocket(serverSocket);
-        WSACleanup();
-        return 1;
-    }
+    listen(serverSocket, 5);
 
     printf("En attente de connexions...\n");
     addr_size = sizeof serverStorage;
     newSocket = accept(serverSocket, (struct sockaddr *) &serverStorage, &addr_size);
-    if (newSocket == INVALID_SOCKET) {
-        printf("Échec de l'acceptation : %ld\n", WSAGetLastError());
-        closesocket(serverSocket);
-        WSACleanup();
-        return 1;
-    }
+    printf("Nouvelle connexion acceptée.\n");
 
-    printf("Connexion acceptée. En attente de messages...\n");
+    printf("En attente de messages...\n");
     char buffer[1024];
-    int bytesReceived = recv(newSocket, buffer, 1024, 0);
-    if (bytesReceived == SOCKET_ERROR) {
-        printf("Échec de la réception : %ld\n", WSAGetLastError());
-    } else if (bytesReceived == 0) {
-        printf("La connexion a été fermée par le client.\n");
-    } else {
-        printf("Réponse reçue du client : %s\n", buffer);
-    }
-
-    printf("Envoi d'un message au client...\n");
-    char *message = "Hello Client!\n";
-    int bytesSent = send(newSocket, message, strlen(message), 0);
-    if (bytesSent == SOCKET_ERROR) {
-        printf("Échec de l'envoi : %ld\n", WSAGetLastError());
-    }
+    recv(newSocket, buffer, 1024, 0);
+    printf("Message reçu : %s\n", buffer);
 
     printf("Fermeture du socket...\n");
     closesocket(newSocket);
